@@ -8,11 +8,12 @@ const getOrgRepos = (org: string) => {
     return githubService.getOrgRepositories(org)
 }
 
-const getRepos = (input: string, apiToUse: ApiToUse) => {
+const getRepos = async (owner: string, apiToUse: ApiToUse) => {
+    console.log('getting repos...');
     if (apiToUse === 'username') {
-        return getUserRepos(input)
+        return getUserRepos(owner)
     } else if (apiToUse === 'org') {
-        return getOrgRepos(input)
+        return getOrgRepos(owner)
     } else {
         throw new Error('Invalid api selection')
     }

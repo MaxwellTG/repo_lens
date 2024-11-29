@@ -38,7 +38,7 @@ class GitHubRepositoryService {
                     },
                 }
             )
-
+            console.log('successfully retrieved org repos');
             return response.data
         } catch (error) {
             console.error(
@@ -65,6 +65,7 @@ class GitHubRepositoryService {
                 }
             )
 
+            console.log('successfully retrieved user repos');
             return response.data
         } catch (error) {
             console.error(

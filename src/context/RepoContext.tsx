@@ -7,6 +7,10 @@ type Props = {
 }
 
 type RepoContextType = {
+    apiToUse: ApiToUse
+    apiToUseSetter: (input: ApiToUse) => void
+    owner: string | null,
+    ownerSetter: (input: string | null) => void
     setToDefault: () => void
     type: RepoTypes
     selectTypeFilter: (input: RepoTypes) => void
@@ -21,7 +25,7 @@ type RepoContextType = {
     incrementPage: () => void
     decrementPage: () => void
     repoData: Repo[]
-    getRepoData: (input: string) => void
+    getRepoData: () => void
 }
 
 type RepoTypes = 'all' | 'public' | 'private' | 'forks' | 'sources' | 'member'
@@ -32,7 +36,7 @@ const RepoContext = createContext<RepoContextType | null>(null)
 
 export const RepoContextProvider = ({ children }: Props) => {
     const [apiToUse, apiToUseSetter] = useState<ApiToUse>('username')
-    const [userInput, userInputSetter] = useState<string | null>(null)
+    const [owner, ownerSetter] = useState<string | null>(null)
 
     const [type, typeSetter] = useState<RepoTypes>('all')
     const [sort, sortSetter] = useState<RepoSorts>('created')
@@ -48,7 +52,7 @@ export const RepoContextProvider = ({ children }: Props) => {
 
     const setToDefault = () => {
         apiToUseSetter('username')
-        userInputSetter(null)
+        ownerSetter(null)
         typeSetter('all')
         sortSetter('created')
         directionSetter('asc')
@@ -80,10 +84,13 @@ export const RepoContextProvider = ({ children }: Props) => {
     }
 
     const getRepoData = () => {
-        if (!userInput) return
+        if (!owner) {
+            console.warn('No user input')
+            return;
+        }
 
         repoInterface
-            .getRepos(userInput, apiToUse)
+            .getRepos(owner, apiToUse)
             .then((data) => {
                 repoDataSetter(data)
                 // TODO: UI error handling
@@ -96,6 +103,10 @@ export const RepoContextProvider = ({ children }: Props) => {
     return (
         <RepoContext.Provider
             value={{
+                apiToUse,
+                apiToUseSetter,
+                owner,
+                ownerSetter,
                 setToDefault,
                 type,
                 selectTypeFilter,
