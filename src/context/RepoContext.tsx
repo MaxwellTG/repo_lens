@@ -28,9 +28,9 @@ type RepoContextType = {
     getRepoData: () => void
 }
 
-type RepoTypes = 'all' | 'public' | 'private' | 'forks' | 'sources' | 'member'
-type RepoSorts = 'created' | 'updated' | 'pushed' | 'full_name'
-type RepoDirections = 'asc' | 'desc'
+export type RepoTypes = 'all' | 'public' | 'private' | 'forks' | 'sources' | 'member'
+export type RepoSorts = 'created' | 'updated' | 'pushed' | 'full_name'
+export type RepoDirections = 'asc' | 'desc'
 
 const RepoContext = createContext<RepoContextType | null>(null)
 
@@ -92,6 +92,7 @@ export const RepoContextProvider = ({ children }: Props) => {
         repoInterface
             .getRepos(owner, apiToUse)
             .then((data) => {
+                console.log('data: ', data);
                 repoDataSetter(data)
                 // TODO: UI error handling
             })
