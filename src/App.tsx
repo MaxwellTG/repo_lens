@@ -7,10 +7,10 @@ import "./App.css";
 function App() {
   return (
     <Container>
-        <RepoContextProvider>
-            <RepoSearchForm />
-            <Table />
-        </RepoContextProvider>
+      <RepoContextProvider>
+        <RepoSearchForm />
+        <Table />
+      </RepoContextProvider>
     </Container>
   );
 }
