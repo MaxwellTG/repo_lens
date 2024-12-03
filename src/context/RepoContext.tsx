@@ -1,107 +1,108 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { repoInterface, Repo } from "../api/repositoryInterface";
-import { ApiToUse } from "../api/services/GithubService";
+import { OwnerType } from "../api/services/GithubService";
+import {
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 
 type Props = {
   children: React.ReactNode;
 };
 
-type RepoContextType = {
-  apiToUse: ApiToUse;
-  apiToUseSetter: (input: ApiToUse) => void;
-  owner: string | null;
-  ownerSetter: (input: string | null) => void;
-  setToDefault: () => void;
+export enum RepoTypes {
+  ALL = "all",
+  PUBLIC = "public",
+  PRIVATE = "private",
+  FORKS = "forks",
+  SOURCES = "sources",
+  MEMBER = "member",
+}
+
+export enum RepoSorts {
+  CREATED = "created",
+  UPDATED = "updated",
+  PUSHED = "pushed",
+  FULL_NAME = "full_name",
+}
+
+export enum Directions {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export interface FormData {
+  ownerType: OwnerType;
+  owner: string;
   type: RepoTypes;
-  selectTypeFilter: (input: RepoTypes) => void;
   sort: RepoSorts;
-  selectSort: (input: RepoSorts) => void;
-  direction: RepoDirections;
-  selectDirection: (input: RepoDirections) => void;
-  per_page: number; // default 30, max 100
-  selectPer_page: (input: number) => void;
+  direction: Directions;
+  per_page: number;
+}
+
+interface RepoContextType extends UseFormReturn<FormData> {
   page: number;
   selectPage: (input: number) => void;
-  incrementPage: () => void;
-  decrementPage: () => void;
   repoData: Repo[];
   getRepoData: () => void;
-};
-
-export type RepoTypes =
-  | "all"
-  | "public"
-  | "private"
-  | "forks"
-  | "sources"
-  | "member";
-export type RepoSorts = "created" | "updated" | "pushed" | "full_name";
-export type RepoDirections = "asc" | "desc";
+  setToDefault: () => void;
+  isLoading: boolean;
+  error: string | null;
+}
 
 const RepoContext = createContext<RepoContextType | null>(null);
 
 export const RepoContextProvider = ({ children }: Props) => {
-  const [apiToUse, apiToUseSetter] = useState<ApiToUse>("username");
-  const [owner, ownerSetter] = useState<string | null>(null);
+  const [repoData, setRepoData] = useState<Repo[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
-  const [type, typeSetter] = useState<RepoTypes>("all");
-  const [sort, sortSetter] = useState<RepoSorts>("created");
-  const [direction, directionSetter] = useState<RepoDirections>("asc");
-  const [per_page, per_pageSetter] = useState(30);
-  const [page, pageSetter] = useState(1);
-  const [repoData, repoDataSetter] = useState<Repo[]>([]);
+  // Form method with default values
+  const formData = useForm<FormData>({
+    defaultValues: {
+      ownerType: OwnerType.USERNAME,
+      owner: "",
+      type: RepoTypes.ALL,
+      sort: RepoSorts.CREATED,
+      direction: Directions.DESC,
+      per_page: 30,
+    },
+  });
 
-  useEffect(() => {
-    // Github's REST API states that the default direction for sorting by 'full_name' is 'asc' and the default direction for all others is 'desc'
-    if (sort !== "full_name") directionSetter("desc");
-  }, [sort]);
+  // Github's REST API states that the default direction for sorting by 'full_name' is 'asc' and the default direction for all others is 'desc'
+//   const currentSortType = formData.watch("sort");
+//   if (currentSortType !== RepoSorts.FULL_NAME)
+//     formData.setValue("direction", Directions.DESC);
 
+    useEffect(() => {
+        getRepoData();
+    }, [page])
+
+  // Functions
   const setToDefault = () => {
-    apiToUseSetter("username");
-    ownerSetter(null);
-    typeSetter("all");
-    sortSetter("created");
-    directionSetter("asc");
-    per_pageSetter(30);
-    pageSetter(1);
-    repoDataSetter([]);
-  };
-  const selectTypeFilter = (input: RepoTypes) => typeSetter(input);
-  const selectSort = (input: RepoSorts) => sortSetter(input);
-  const selectDirection = (input: RepoDirections) => directionSetter(input);
-
-  const selectPer_page = (input: number) => {
-    per_pageSetter(input);
+    console.log("set to default");
   };
 
-  const selectPage = (input: number) => {
-    // TODO: add a check to make sure the page exists in repoData
-    pageSetter(input);
-  };
-
-  const incrementPage = () => {
-    // TODO: add a check to make sure page is not greater than the last page
-    pageSetter(page + 1);
-  };
-
-  const decrementPage = () => {
-    // TODO: add a check to make sure page is not less than 1
-    pageSetter(page - 1);
+  const selectPage = (page: number) => {
+    setPage(page);
   };
 
   const getRepoData = () => {
+    const owner = formData.getValues("owner");
     if (!owner) {
       console.warn("No user input");
       return;
     }
 
+    const ownerType = formData.getValues("ownerType");
     repoInterface
-      .getRepos(owner, apiToUse)
+      .getRepos(owner, ownerType, {type: formData.getValues("type"), sort: formData.getValues("sort"), direction: formData.getValues("direction"), per_page: formData.getValues("per_page"), page: page})
       .then((data) => {
         console.log("data: ", data);
-        repoDataSetter(data);
-        // TODO: UI error handling
+        setRepoData(data);
       })
+      // TODO: UI error handling
       .catch((error) => {
         console.warn(error);
       });
@@ -110,25 +111,14 @@ export const RepoContextProvider = ({ children }: Props) => {
   return (
     <RepoContext.Provider
       value={{
-        apiToUse,
-        apiToUseSetter,
-        owner,
-        ownerSetter,
-        setToDefault,
-        type,
-        selectTypeFilter,
-        sort,
-        selectSort,
-        direction,
-        selectDirection,
-        per_page,
-        selectPer_page,
+        ...formData,
         page,
         selectPage,
-        incrementPage,
-        decrementPage,
         repoData,
         getRepoData,
+        setToDefault,
+        isLoading,
+        error,
       }}
     >
       {children}

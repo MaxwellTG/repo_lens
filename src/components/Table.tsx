@@ -1,11 +1,12 @@
 import { useRepo } from "../context/RepoContext";
 import styled from "styled-components";
+import Pages from "./Pages";
 
-function Table() {
+const Table = () => {
   const { repoData } = useRepo();
 
   if (repoData.length === 0) {
-    return <div>TODO: Remove me, this represents no data</div>;
+    return <div></div>;
   }
 
   return (
@@ -19,7 +20,7 @@ function Table() {
             <th>Forks</th>
             <th>Open Issues</th>
             <th>Watchers</th>
-            <th>Pushed At</th>
+            {/* <th>Pushed At</th> */}
           </tr>
         </StyledTHead>
         <StyledTBody>
@@ -31,11 +32,12 @@ function Table() {
               <td>{repo.forks_count}</td>
               <td>{repo.open_issues_count}</td>
               <td>{repo.watchers_count}</td>
-              <td>{repo.pushed_at}</td>
+              {/* <td>{repo.pushed_at}</td> */}
             </tr>
           ))}
         </StyledTBody>
       </table>
+      <Pages />
     </Container>
   );
 }

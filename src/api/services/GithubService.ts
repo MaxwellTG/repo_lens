@@ -2,16 +2,19 @@ import { Octokit } from "@octokit/core";
 import { components } from "@octokit/openapi-types";
 import { RequestParameters } from "@octokit/types";
 
-export type ApiToUse = "username" | "org";
+export enum OwnerType {
+  USERNAME = "username",
+  ORG = "org",
+}
 
 class GitHubRepositoryService {
-  private static instance: GitHubRepositoryService;
-  private octokit: Octokit;
+  public static instance: GitHubRepositoryService;
+  public octokit: Octokit;
 
   private constructor() {
+    // TODO: Add auth
     // this.octokit = new Octokit({
-    //   auth: token || process.env.GITHUB_TOKEN,
-    //   userAgent: 'GitHub Repository Fetcher v1.0',
+    //   auth: process.env.GITHUB_TOKEN,
     // });
     this.octokit = new Octokit();
   }
@@ -25,12 +28,12 @@ class GitHubRepositoryService {
 
   public async getOrgRepositories(
     org: string,
-    options?: RequestParameters,
+    options: RequestParameters,
   ): Promise<GitHubRepo[]> {
     try {
       const response = await this.octokit.request(`GET /orgs/${org}/repos`, {
         org: org,
-        request: { ...options },
+        ...options,
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
         },
@@ -48,14 +51,14 @@ class GitHubRepositoryService {
 
   public async getUserRepositories(
     username: string,
-    options?: RequestParameters,
+    options: RequestParameters,
   ): Promise<GitHubRepo[]> {
     try {
       const response = await this.octokit.request(
         `GET /users/${username}/repos`,
         {
           username: username,
-          request: { ...options },
+          ...options,
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },

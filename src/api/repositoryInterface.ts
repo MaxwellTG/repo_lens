@@ -1,19 +1,20 @@
-import { githubService, GitHubRepo, ApiToUse } from "./services/GithubService";
+import { githubService, GitHubRepo, OwnerType } from "./services/GithubService";
+import { RequestParameters } from "@octokit/types";
 
-const getUserRepos = (username: string) => {
-  return githubService.getUserRepositories(username);
+const getUserRepos = (username: string, options: RequestParameters) => {
+  return githubService.getUserRepositories(username, options);
 };
 
-const getOrgRepos = (org: string) => {
-  return githubService.getOrgRepositories(org);
+const getOrgRepos = (org: string, options: RequestParameters) => {
+  return githubService.getOrgRepositories(org, options);
 };
 
-const getRepos = async (owner: string, apiToUse: ApiToUse) => {
-  console.log("getting repos...");
-  if (apiToUse === "username") {
-    return getUserRepos(owner);
-  } else if (apiToUse === "org") {
-    return getOrgRepos(owner);
+const getRepos = async (owner: string, ownerType: OwnerType, options: RequestParameters) => {
+  console.log("getting repos: ", owner, ownerType, options);
+  if (ownerType === "username") {
+    return getUserRepos(owner, options);
+  } else if (ownerType === "org") {
+    return getOrgRepos(owner, options);
   } else {
     throw new Error("Invalid api selection");
   }
