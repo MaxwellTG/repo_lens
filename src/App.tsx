@@ -18,6 +18,7 @@ function App() {
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export default App;

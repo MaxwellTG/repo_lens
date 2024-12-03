@@ -41,7 +41,7 @@ class GitHubRepositoryService {
       console.log("successfully retrieved org repos");
       return response.data;
     } catch (error) {
-      console.error(
+      console.warn(
         `[GithubInterface] Error fetching repositories for org: ${org}:`,
         error,
       );
@@ -68,7 +68,7 @@ class GitHubRepositoryService {
       console.log("successfully retrieved user repos");
       return response.data;
     } catch (error) {
-      console.error(
+      console.warn(
         `[GithubInterface] Error fetching repositories for username: ${username}:`,
         error,
       );

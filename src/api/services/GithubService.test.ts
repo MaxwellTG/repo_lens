@@ -31,7 +31,7 @@ describe('GitHubRepositoryService', () => {
 
   // User Repositories Tests
   describe('getUserRepositories', () => {
-    const mockUsername = 'testuser';
+    const mockUsername = 'google';
     const mockOptions = { type: 'all' };
     const mockRepos = [
       { id: 1, name: 'repo1' },
@@ -73,7 +73,7 @@ describe('GitHubRepositoryService', () => {
 
   // Organization Repositories Tests
   describe('getOrgRepositories', () => {
-    const mockOrgName = 'testorg';
+    const mockOrgName = 'google';
     const mockOptions = { type: 'all' };
     const mockRepos = [
       { id: 1, name: 'org-repo1' },

@@ -44,7 +44,7 @@ const PageButton = styled.div`
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
-  color: grey;
+  color: #222;
   background-color: #f0f0f0;
 `;
 
