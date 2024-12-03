@@ -75,6 +75,7 @@ export const RepoContextProvider = ({ children }: Props) => {
 
   // Functions
   const setToDefault = () => {
+    // TODO: Possible feature request to clear form data
     console.log("set to default");
   };
 
@@ -99,7 +100,6 @@ export const RepoContextProvider = ({ children }: Props) => {
         page: page,
       })
       .then((data) => {
-        console.log("data: ", data);
         setRepoData(data);
       })
       .catch((error) => {

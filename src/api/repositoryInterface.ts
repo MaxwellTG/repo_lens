@@ -14,7 +14,7 @@ const getRepos = async (
   ownerType: OwnerType,
   options: RequestParameters,
 ) => {
-  console.log("getting repos: ", owner, ownerType, options);
+  console.log("Fetching repos: ", owner, ownerType, options);
   if (ownerType === "username") {
     return getUserRepos(owner, options);
   } else if (ownerType === "org") {

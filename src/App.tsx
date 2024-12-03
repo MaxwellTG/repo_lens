@@ -6,12 +6,12 @@ import "./App.css";
 
 function App() {
   return (
-    <RepoContextProvider>
-      <Container>
-        <RepoSearchForm />
-        <Table />
-      </Container>
-    </RepoContextProvider>
+    <Container>
+        <RepoContextProvider>
+            <RepoSearchForm />
+            <Table />
+        </RepoContextProvider>
+    </Container>
   );
 }
 
