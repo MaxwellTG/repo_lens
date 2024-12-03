@@ -40,7 +40,7 @@ const Table = () => {
       <Pages />
     </Container>
   );
-}
+};
 
 const Container = styled.div`
   display: grid;

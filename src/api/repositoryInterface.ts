@@ -9,7 +9,11 @@ const getOrgRepos = (org: string, options: RequestParameters) => {
   return githubService.getOrgRepositories(org, options);
 };
 
-const getRepos = async (owner: string, ownerType: OwnerType, options: RequestParameters) => {
+const getRepos = async (
+  owner: string,
+  ownerType: OwnerType,
+  options: RequestParameters,
+) => {
   console.log("getting repos: ", owner, ownerType, options);
   if (ownerType === "username") {
     return getUserRepos(owner, options);

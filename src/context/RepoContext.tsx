@@ -1,10 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { repoInterface, Repo } from "../api/repositoryInterface";
 import { OwnerType } from "../api/services/GithubService";
-import {
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 
 type Props = {
   children: React.ReactNode;
@@ -68,13 +65,13 @@ export const RepoContextProvider = ({ children }: Props) => {
 
   // TODO: Update sorting? Possible product question
   // Github's REST API states that the default direction for sorting by 'full_name' is 'asc' and the default direction for all others is 'desc'
-//   const currentSortType = formData.watch("sort");
-//   if (currentSortType !== RepoSorts.FULL_NAME)
-//     formData.setValue("direction", Directions.DESC);
+  //   const currentSortType = formData.watch("sort");
+  //   if (currentSortType !== RepoSorts.FULL_NAME)
+  //     formData.setValue("direction", Directions.DESC);
 
-    useEffect(() => {
-        getRepoData();
-    }, [page])
+  useEffect(() => {
+    getRepoData();
+  }, [page]);
 
   // Functions
   const setToDefault = () => {
@@ -94,12 +91,17 @@ export const RepoContextProvider = ({ children }: Props) => {
 
     const ownerType = formData.getValues("ownerType");
     repoInterface
-      .getRepos(owner, ownerType, {type: formData.getValues("type"), sort: formData.getValues("sort"), direction: formData.getValues("direction"), per_page: formData.getValues("per_page"), page: page})
+      .getRepos(owner, ownerType, {
+        type: formData.getValues("type"),
+        sort: formData.getValues("sort"),
+        direction: formData.getValues("direction"),
+        per_page: formData.getValues("per_page"),
+        page: page,
+      })
       .then((data) => {
         console.log("data: ", data);
         setRepoData(data);
       })
-      // TODO: UI error handling
       .catch((error) => {
         console.warn(error);
       });

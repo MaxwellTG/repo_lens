@@ -8,27 +8,23 @@ const Pages = () => {
   const handleOnFirst = () => {
     // TODO: Implment when handleOnLast is ready
     selectPage(1);
-  }
+  };
   const handleOnPrevious = () => {
     selectPage(page - 1);
-  }
+  };
   const handleOnNext = () => {
     selectPage(page + 1);
-  }
+  };
   const handleOnLast = () => {
     // TODO: Confirm this info is available with a call to the API or from previously fetched data
     selectPage(-1);
-  }
+  };
 
   return (
     <PagesContainer>
-      <PageButton
-        onClick={() => handleOnPrevious()}
-      >Previous</PageButton>
+      <PageButton onClick={() => handleOnPrevious()}>Previous</PageButton>
       <CurrentPage>{page}</CurrentPage>
-      <PageButton
-        onClick={() => handleOnNext()}
-      >Next</PageButton>
+      <PageButton onClick={() => handleOnNext()}>Next</PageButton>
     </PagesContainer>
   );
 };

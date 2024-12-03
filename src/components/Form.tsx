@@ -31,7 +31,7 @@ const RepoSearchForm = () => {
         <Input
           placeholder="username or organization"
           {...register("owner", {
-            required: "An owner name is required"
+            required: "An owner name is required",
           })}
         />
         {errors.owner && <ErrorMessage>{errors.owner.message}</ErrorMessage>}
@@ -39,9 +39,7 @@ const RepoSearchForm = () => {
 
       <InputGroup>
         <Label>Owner Type</Label>
-        <Select
-          {...register("ownerType")}
-        >
+        <Select {...register("ownerType")}>
           {Object.values(OwnerType).map((type) => (
             <option key={type} value={type}>
               {type}
