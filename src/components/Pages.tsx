@@ -6,6 +6,7 @@ const Pages = () => {
   const { page, selectPage } = useRepo();
 
   const handleOnFirst = () => {
+    // TODO: Implment when handleOnLast is ready
     selectPage(1);
   }
   const handleOnPrevious = () => {
@@ -15,7 +16,7 @@ const Pages = () => {
     selectPage(page + 1);
   }
   const handleOnLast = () => {
-    // TODO: Confirm this works
+    // TODO: Confirm this info is available with a call to the API or from previously fetched data
     selectPage(-1);
   }
 

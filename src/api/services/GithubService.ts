@@ -13,9 +13,6 @@ class GitHubRepositoryService {
 
   private constructor() {
     // TODO: Add auth
-    // this.octokit = new Octokit({
-    //   auth: process.env.GITHUB_TOKEN,
-    // });
     this.octokit = new Octokit();
   }
 

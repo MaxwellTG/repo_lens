@@ -20,7 +20,7 @@ const RepoSearchForm = () => {
     try {
       await getRepoData();
     } catch (error) {
-      console.error("Error fetching repositories:", error);
+      console.error("[Form]onSubmit Error fetching repositories:", error);
     }
   };
 

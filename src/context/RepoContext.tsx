@@ -46,16 +46,12 @@ interface RepoContextType extends UseFormReturn<FormData> {
   repoData: Repo[];
   getRepoData: () => void;
   setToDefault: () => void;
-  isLoading: boolean;
-  error: string | null;
 }
 
 const RepoContext = createContext<RepoContextType | null>(null);
 
 export const RepoContextProvider = ({ children }: Props) => {
   const [repoData, setRepoData] = useState<Repo[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
 
   // Form method with default values
@@ -70,6 +66,7 @@ export const RepoContextProvider = ({ children }: Props) => {
     },
   });
 
+  // TODO: Update sorting? Possible product question
   // Github's REST API states that the default direction for sorting by 'full_name' is 'asc' and the default direction for all others is 'desc'
 //   const currentSortType = formData.watch("sort");
 //   if (currentSortType !== RepoSorts.FULL_NAME)
@@ -117,8 +114,6 @@ export const RepoContextProvider = ({ children }: Props) => {
         repoData,
         getRepoData,
         setToDefault,
-        isLoading,
-        error,
       }}
     >
       {children}

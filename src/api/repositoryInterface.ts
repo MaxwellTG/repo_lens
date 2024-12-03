@@ -16,7 +16,7 @@ const getRepos = async (owner: string, ownerType: OwnerType, options: RequestPar
   } else if (ownerType === "org") {
     return getOrgRepos(owner, options);
   } else {
-    throw new Error("Invalid api selection");
+    throw new Error("Invalid ownerType/endpoint selection");
   }
 };
 export const repoInterface = {
